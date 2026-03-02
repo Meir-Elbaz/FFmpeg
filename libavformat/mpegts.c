@@ -1428,6 +1428,23 @@ skip:
                 }
 
                 memcpy(pes->buffer->data + pes->data_index, p, buf_size);
+
+                if (pes->stream_type == STREAM_TYPE_METADATA &&
+                    pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV &&
+                    buf_size >= 5 && pes->data_index == 0) 
+                {
+                    uint8_t *d = pes->buffer->data;
+                    
+                    if (d[0] == 0x00) {
+                        if ((d[2] & 0x0F) != 0x0F) {
+                            d[2] = (d[2] & 0xF0) | 0x0F;                            
+                        }                    
+                    } else {
+                        av_log(pes->stream, AV_LOG_WARNING,
+                            "SYNC profile but payload does not start with SERVICE ID\n");
+                    }
+                }
+
                 pes->data_index += buf_size;
                 /* emit complete packets with known packet size
                  * decreases demuxer delay for infrequent packets like subtitles from
