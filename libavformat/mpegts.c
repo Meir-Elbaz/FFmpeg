@@ -2626,6 +2626,10 @@ static void pmt_cb(MpegTSFilter *filter, const uint8_t *section, int section_len
         if (pes && pes->stream_type != stream_type)
             mpegts_set_stream_info(st, pes, stream_type, prog_reg_desc);
 
+        if (stream_type == STREAM_TYPE_METADATA) {
+            st->codecpar->profile = AV_PROFILE_KLVA_SYNC;            
+        }  
+
         add_pid_to_program(prg, pid);
         if (prg) {
             prg->streams[i].idx = st->index;
