@@ -1332,9 +1332,9 @@ skip:
                     pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV &&
                     buf_size >= 5) {
                     /* skip metadata access unit header - see MISB ST 1402 */
-                    pes->pes_header_size += 5;
+                    /*pes->pes_header_size += 5;
                     p += 5;
-                    buf_size -= 5;
+                    buf_size -= 5;*/
                 }
                 if (   pes->ts->fix_teletext_pts
                     && (   pes->st->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT
