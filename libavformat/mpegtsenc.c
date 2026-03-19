@@ -1478,8 +1478,10 @@ static int get_pes_stream_id(AVFormatContext *s, AVStream *st, int stream_id, in
         if(st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV){
             if(st->codecpar->profile == AV_PROFILE_KLVA_SYNC)
                 stream_id = STREAM_ID_METADATA_STREAM;
-            else if(stream_id == STREAM_ID_PRIVATE_STREAM_1)/* asynchronous KLV */
-                *async = 1;  
+            else if(st->codecpar->profile == AV_PROFILE_KLVA_ASYNC){/* asynchronous KLV */
+                *async = 1;
+                stream_id = STREAM_ID_PRIVATE_STREAM_1;  
+            }
         }              
         return stream_id;
     } else {

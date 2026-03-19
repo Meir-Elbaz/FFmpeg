@@ -2644,8 +2644,10 @@ static void pmt_cb(MpegTSFilter *filter, const uint8_t *section, int section_len
             mpegts_set_stream_info(st, pes, stream_type, prog_reg_desc);
 
         if (stream_type == STREAM_TYPE_METADATA) {
-            st->codecpar->profile = AV_PROFILE_KLVA_SYNC;            
-        }  
+            st->codecpar->profile = AV_PROFILE_KLVA_SYNC;
+        } else if (stream_type == STREAM_TYPE_PRIVATE_DATA) { 
+            st->codecpar->profile = AV_PROFILE_KLVA_ASYNC;
+        } 
 
         add_pid_to_program(prg, pid);
         if (prg) {
